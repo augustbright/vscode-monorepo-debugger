@@ -1,0 +1,87 @@
+{
+  "name": "vscode-monorepo-debugger",
+  "displayName": "Monorepo Debugger",
+  "publisher": "augustbright",
+  "repository": "github:augustbright/vscode-monorepo-debugger",
+  "description": "Launch and stop your monorepo apps or packages individually with a convenient list.",
+  "icon": "resources/logo-128x128.png",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "launchConfigsView",
+          "name": "Monorepo Debugger"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "launchConfigsView.start",
+          "when": "view == launchConfigsView && viewItem == stoppedConfig",
+          "group": "inline"
+        },
+        {
+          "command": "launchConfigsView.stop",
+          "when": "view == launchConfigsView && viewItem == runningConfig",
+          "group": "inline"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "launchConfigsView.start",
+        "title": "Start Config",
+        "icon": "$(play)"
+      },
+      {
+        "command": "launchConfigsView.stop",
+        "title": "Stop Config",
+        "icon": "$(debug-stop)"
+      }
+    ]
+  },
+  "scripts": {
+    "bundle:dev": "tsex bundle --external vscode --format cjs --platform node --no-declare",
+    "bundle:prod": "tsex bundle --external vscode --format cjs --platform node --minify",
+    "clean": "tsex clean",
+    "compile": "tsex compile",
+    "package": "vsce package",
+    "prepublishOnly": "scex -bs clean bundle:prod",
+    "vscode:prepublish": "scex -bs clean bundle:prod",
+    "dev": "scex -bs bundle:dev debug",
+    "prod": "scex -bs bundle:prod debug"
+  },
+  "categories": [
+    "Debuggers"
+  ],
+  "engines": {
+    "vscode": "^1.87.0"
+  },
+  "keywords": [
+    "vscode",
+    "vsc",
+    "extension",
+    "monorepo",
+    "workspaces",
+    "debug",
+    "debugger"
+  ],
+  "dependencies": {
+    "tiny-jsonc": "^1.0.1",
+    "vscode-extras": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.23",
+    "@types/vscode": "^1.87.0",
+    "esbuild": "0.20.1",
+    "scex": "^1.1.0",
+    "tsex": "^3.2.0",
+    "typescript": "^5.4.2"
+  }
+}
